@@ -65,7 +65,9 @@ test_pattern_t test_list[NUM_TEST_PATTERNS] = {
     { true,  PAR,    1,   48,    0, "[Random number sequence]               "},
     { true,  PAR,    1,    6,    0, "[Modulo 20, random pattern]            "},
     { true,  ONE,    6,  240,    0, "[Bit fade test, 2 patterns]            "},
-};
+    { true,  SEQ,    1,    2,    0, "[CTP & inverted memory fill/verify]    "},
+    { true,  SEQ,    1,   16,    0, "[CTP spot stress]                      "},
+}; 
 
 int ticks_per_pass[NUM_PASS_TYPES];
 int ticks_per_test[NUM_PASS_TYPES][NUM_TEST_PATTERNS];
@@ -247,6 +249,14 @@ int run_test(int my_cpu, int test, int stage, int iterations)
       case 10:
         ticks += test_bit_fade(my_cpu, stage, iterations);
         BAILOUT;
+        break;
+      case 11: // CTP & inverted memory fill/verify 
+            ticks += ctp_fill_verify(my_cpu, iterations);
+            BAILOUT;
+        break;
+      case 12: // CTP spot stress 
+//            ticks += ctp_ss(my_cpu, iterations);
+            BAILOUT;
         break;
     }
     return ticks;

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+    </df>
+    <logicalFolder name="mt86p6ctp06"
+                   displayName="mt86p6ctp06"
+                   projectFiles="true"
+                   root="..">
+      <logicalFolder name="app" displayName="app" projectFiles="true">
+        <itemPath>../app/badram.c</itemPath>
+        <itemPath>../app/badram.h</itemPath>
+        <itemPath>../app/config.c</itemPath>
+        <itemPath>../app/config.h</itemPath>
+        <itemPath>../app/display.c</itemPath>
+        <itemPath>../app/display.h</itemPath>
+        <itemPath>../app/error.c</itemPath>
+        <itemPath>../app/error.h</itemPath>
+        <itemPath>../app/interrupt.c</itemPath>
+        <itemPath>../app/interrupt.h</itemPath>
+        <itemPath>../app/main.c</itemPath>
+        <itemPath>../app/test.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="boot" displayName="boot" projectFiles="true">
+        <itemPath>../boot/boot.h</itemPath>
+        <itemPath>../boot/bootparams.h</itemPath>
+        <itemPath>../boot/efi.h</itemPath>
+        <itemPath>../boot/efisetup.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="lib" displayName="lib" projectFiles="true">
+        <itemPath>../lib/assert.h</itemPath>
+        <itemPath>../lib/barrier.c</itemPath>
+        <itemPath>../lib/barrier.h</itemPath>
+        <itemPath>../lib/ctype.c</itemPath>
+        <itemPath>../lib/ctype.h</itemPath>
+        <itemPath>../lib/print.c</itemPath>
+        <itemPath>../lib/print.h</itemPath>
+        <itemPath>../lib/read.c</itemPath>
+        <itemPath>../lib/read.h</itemPath>
+        <itemPath>../lib/spinlock.h</itemPath>
+        <itemPath>../lib/string.c</itemPath>
+        <itemPath>../lib/string.h</itemPath>
+        <itemPath>../lib/unistd.c</itemPath>
+        <itemPath>../lib/unistd.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="system" displayName="system" projectFiles="true">
+        <itemPath>../system/cache.h</itemPath>
+        <itemPath>../system/cpuid.c</itemPath>
+        <itemPath>../system/cpuid.h</itemPath>
+        <itemPath>../system/cpuinfo.c</itemPath>
+        <itemPath>../system/cpuinfo.h</itemPath>
+        <itemPath>../system/cpulocal.c</itemPath>
+        <itemPath>../system/cpulocal.h</itemPath>
+        <itemPath>../system/ehci.c</itemPath>
+        <itemPath>../system/ehci.h</itemPath>
+        <itemPath>../system/font.c</itemPath>
+        <itemPath>../system/font.h</itemPath>
+        <itemPath>../system/hwctrl.c</itemPath>
+        <itemPath>../system/hwctrl.h</itemPath>
+        <itemPath>../system/io.h</itemPath>
+        <itemPath>../system/jedec_id.h</itemPath>
+        <itemPath>../system/keyboard.c</itemPath>
+        <itemPath>../system/keyboard.h</itemPath>
+        <itemPath>../system/memrw32.h</itemPath>
+        <itemPath>../system/memrw64.h</itemPath>
+        <itemPath>../system/memsize.h</itemPath>
+        <itemPath>../system/msr.h</itemPath>
+        <itemPath>../system/ohci.c</itemPath>
+        <itemPath>../system/ohci.h</itemPath>
+        <itemPath>../system/pci.c</itemPath>
+        <itemPath>../system/pci.h</itemPath>
+        <itemPath>../system/pmem.c</itemPath>
+        <itemPath>../system/pmem.h</itemPath>
+        <itemPath>../system/reloc64.c</itemPath>
+        <itemPath>../system/screen.c</itemPath>
+        <itemPath>../system/screen.h</itemPath>
+        <itemPath>../system/serial.c</itemPath>
+        <itemPath>../system/serial.h</itemPath>
+        <itemPath>../system/smbios.c</itemPath>
+        <itemPath>../system/smbios.h</itemPath>
+        <itemPath>../system/smbus.c</itemPath>
+        <itemPath>../system/smbus.h</itemPath>
+        <itemPath>../system/smp.c</itemPath>
+        <itemPath>../system/smp.h</itemPath>
+        <itemPath>../system/temperature.c</itemPath>
+        <itemPath>../system/temperature.h</itemPath>
+        <itemPath>../system/tsc.h</itemPath>
+        <itemPath>../system/uhci.c</itemPath>
+        <itemPath>../system/uhci.h</itemPath>
+        <itemPath>../system/usb.h</itemPath>
+        <itemPath>../system/usbhcd.c</itemPath>
+        <itemPath>../system/usbhcd.h</itemPath>
+        <itemPath>../system/vmem.c</itemPath>
+        <itemPath>../system/vmem.h</itemPath>
+        <itemPath>../system/xhci.c</itemPath>
+        <itemPath>../system/xhci.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="tests" displayName="tests" projectFiles="true">
+        <itemPath>../tests/addr_walk1.c</itemPath>
+        <itemPath>../tests/bit_fade.c</itemPath>
+        <itemPath>../tests/block_move.c</itemPath>
+        <itemPath>../tests/modulo_n.c</itemPath>
+        <itemPath>../tests/mov_inv_fixed.c</itemPath>
+        <itemPath>../tests/mov_inv_random.c</itemPath>
+        <itemPath>../tests/mov_inv_walk1.c</itemPath>
+        <itemPath>../tests/own_addr.c</itemPath>
+        <itemPath>../tests/test_funcs.h</itemPath>
+        <itemPath>../tests/test_helper.c</itemPath>
+        <itemPath>../tests/test_helper.h</itemPath>
+        <itemPath>../tests/tests.c</itemPath>
+        <itemPath>../tests/tests.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0"
+                 commonFlags="-std=c11 -m64 -march=x86-64 -fpic -ffreestanding -O3"/>
+        <element flagsID="1"
+                 commonFlags="-std=c11 -m64 -march=x86-64 -fpic -ffreestanding -Os"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../boot</pElem>
+              <pElem>../system</pElem>
+              <pElem>../lib</pElem>
+              <pElem>../tests</pElem>
+              <pElem>../app</pElem>
+              <pElem>app</pElem>
+              <pElem>.</pElem>
+            </incDir>
+          </cTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="../app/badram.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../app/config.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../app/display.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../app/error.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../app/interrupt.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../app/main.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../boot/efisetup.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/barrier.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/ctype.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/print.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/read.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/string.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../lib/unistd.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/cpuid.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/cpuinfo.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/cpulocal.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/ehci.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/font.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/hwctrl.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/keyboard.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/ohci.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/pci.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/pmem.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/reloc64.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/screen.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/serial.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/smbios.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/smbus.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/smp.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/temperature.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/uhci.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/usbhcd.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/vmem.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../system/xhci.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="../tests/addr_walk1.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/bit_fade.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/block_move.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/modulo_n.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/mov_inv_fixed.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/mov_inv_random.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/mov_inv_walk1.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/own_addr.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/test_helper.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="../tests/tests.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="0">
+        </cTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
