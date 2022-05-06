@@ -15,12 +15,12 @@
 #include "test_helper.h"
 
 #if TESTWORD_WIDTH > 32 
-static const testword_t CTP[] = { 
+static const unsigned long long CTP[] = { 
 0x34484f16535d9fc9, 0xd4fea662382cb179, 0x850a1a4d124fcd50, 0x76863cb01b4a364e, 
 0x7092f62e7a4fb906, 0x532abe88ba95758b, 0x30b4c78f9fad8930, 0x39e821e89d8eef04, 
 }; 
 #else 
-static const testword_t CTP[] = {
+static const unsigned long CTP[] = {
 0x34484f16, 0x535d9fc9, 0xd4fea662, 0x382cb179, 0x850a1a4d, 0x124fcd50, 0x76863cb0, 0x1b4a364e, 
 0x7092f62e, 0x7a4fb906, 0x532abe88, 0xba95758b, 0x30b4c78f, 0x9fad8930, 0x39e821e8, 0x9d8eef04, 
 0x85669014, 0xff3edea5, 0x89072ca7, 0xa7e7c9ba, 0x15d5e19e, 0x32193e71, 0x4697ded3, 0xef213dd8, 
@@ -8226,24 +8226,27 @@ static const testword_t CTP[] = {
 }; 
 #endif 
 
-static int idx=0, jdx=0; 
+//#define CHECKDISTURBE
+//#define CTPDEBUG
+
+static long idx=0, jdx=0; 
 
 static testword_t ctp_rand() { 
     testword_t pat; 
-    int ctp_size = sizeof(CTP); 
+    long ctp_size = sizeof(CTP); 
     
     if (jdx < 0) { 
         jdx = ctp_size - 1; 
-        pat = CTP[jdx]; 
+        pat = (testword_t) CTP[jdx]; 
         return pat; 
     }
     if (jdx >= ctp_size) { 
         jdx = 0; 
-        pat = CTP[jdx]; 
+        pat = (testword_t) CTP[jdx]; 
         return pat; 
     }
     
-    pat = CTP[jdx]; 
+    pat = (testword_t) CTP[jdx]; 
     if (jdx == (ctp_size - 1)) jdx = 0; 
     else ++jdx; 
     
@@ -8252,20 +8255,20 @@ static testword_t ctp_rand() {
 
 static testword_t ctp_get(bool inc) { 
     testword_t pat; 
-    int ctp_size = sizeof(CTP); 
+    long ctp_size = sizeof(CTP); 
     
     if (idx < 0) { 
         idx = ctp_size - 1; 
-        pat = CTP[idx]; 
+        pat = (testword_t) CTP[idx]; 
         return pat; 
     }
     if (idx >= ctp_size) { 
         idx = 0; 
-        pat = CTP[idx]; 
+        pat = (testword_t) CTP[idx]; 
         return pat; 
     }
     
-    pat = CTP[idx]; 
+    pat = (testword_t) CTP[idx]; 
     if (inc) ++idx; 
     else --idx; 
     if (idx < 0) idx = ctp_size - 1; 
@@ -8273,24 +8276,61 @@ static testword_t ctp_get(bool inc) {
     
     return pat; 
 }
+#ifdef CHECKDISTURBE
+ static long kdx=0; 
 
+static testword_t ctp_read() { 
+    testword_t pat; 
+    long ctp_size = sizeof(CTP); 
+    
+    if ((kdx < 0) || (kdx >= ctp_size)) return 0; 
+    pat = (testword_t) CTP[kdx]; 
+    
+    return pat; 
+}
+
+/*
+static testword_t ctp_getprv(long i) { 
+    testword_t pat; 
+    long ctp_size = sizeof(CTP); 
+    
+    if ((i <= 0) || (i >= ctp_size)) return 0; 
+    pat = (testword_t) CTP[i-1]; 
+    
+    return pat; 
+}
+
+static testword_t ctp_getnxt(long i) { 
+    testword_t pat; 
+    long ctp_size = sizeof(CTP); 
+    
+    if ((i < 0) || (i >= (ctp_size - 1))) return 0; 
+    pat = (testword_t) CTP[i+1]; 
+    
+    return pat; 
+}
+*/
+#endif
 /* 
  * CTP & inverted memory fill/verify 
  */
 
-static int ctp_fill_bottomup(int my_cpu, int *ictp, bool inv) {
+static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
-    testword_t patt = ctp_rand(); 
     
     for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
     
-//    idx = ictp[vm_map_size-1]; 
-    idx = sizeof(CTP); 
 
     if (my_cpu == master_cpu) {
 //        display_test_pattern_name("CTP-FV upward");
-//        display_test_pattern_value(patt); 
+#ifdef CTPDEBUG
+        idx = ictp[vm_map_size-1]; 
+//        idx = sizeof(CTP); 
         display_test_pattern_value(idx); 
+#else
+        testword_t patt = ctp_rand(); 
+        display_test_pattern_value(patt); 
+#endif
     }
 
     // Fill CTP from bottom up
@@ -8340,7 +8380,7 @@ static int ctp_fill_bottomup(int my_cpu, int *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_bottomup(int my_cpu, int *ictp, bool inv) {
+static int ctp_verify_bottomup(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
     for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
@@ -8393,13 +8433,13 @@ static int ctp_verify_bottomup(int my_cpu, int *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_fill_topdown(int my_cpu, int *ictp, bool inv) {
+static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
-    testword_t patt = ctp_rand(); 
     
     for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
 
     if (my_cpu == master_cpu) {
+        testword_t patt = ctp_rand(); 
 //        display_test_pattern_name("CTP-FV downward");
         display_test_pattern_value(patt); 
     }
@@ -8449,7 +8489,7 @@ static int ctp_fill_topdown(int my_cpu, int *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_topdown(int my_cpu, int *ictp, bool inv) {
+static int ctp_verify_topdown(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
     for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
@@ -8504,7 +8544,7 @@ static int ctp_verify_topdown(int my_cpu, int *ictp, bool inv) {
 
 int ctp_fill_verify(int my_cpu, int iterations)
 {
-    int ictp[vm_map_size-1]; 
+    long ictp[vm_map_size-1]; 
     int ticks = 0;
  
 /*
@@ -8557,20 +8597,33 @@ int ctp_fill_verify(int my_cpu, int iterations)
  * CTP spot stress test 
  */
 
-/*
-static int ctp_ss_bottomup(int my_cpu, int iterations) { 
-    testword_t pat, pat_; 
+static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) { 
     int ticks = 0;
-    testword_t actual=0, patnxt=0, patprv=0;
-    testword_t *ppv=NULL, *pnx=NULL; 
+    
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
 
+    if (my_cpu == master_cpu) {
+        testword_t patt = ctp_rand(); 
+        display_test_pattern_value(patt); 
+    }
+
+    flush_caches(my_cpu);
     for (int j = 0; j < vm_map_size; j++) {
         testword_t *start, *end;
-        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+//        calculate_chunk(&start, &end, my_cpu, i, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[j].start;
+        uintptr_t p1 = (uintptr_t)vm_map[j].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
 
         testword_t *p  = start;
         testword_t *pe = start;
-
+#ifdef CHECKDISTURBE
+        testword_t *ppv = p;
+        testword_t *pnx = p; 
+        testword_t patnxt = 0;
+        testword_t patprv = 0; 
+#endif
         bool at_end = false;
         do {
             // take care to avoid pointer overflow
@@ -8586,6 +8639,8 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
             }
             test_addr[my_cpu] = (uintptr_t)p;
             do {
+                testword_t pat, pat_; 
+                testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
                     pat = ctp_rand(); 
                     pat_ = ~pat; 
@@ -8597,21 +8652,27 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     if (unlikely(actual != pat)) {
                         data_error(p, pat, actual, true);
                     }
+#ifdef CHECKDISTURBE
                     // check if adjacent words disturbed 
                     if (p != start) { 
-                        ppv = p - 1; 
+                        ppv--; 
                         actual = read_word(ppv); 
-                        patprv = ctp_getprv(); 
+                        kdx = ictp[j] - 1; 
+                        patprv = ctp_read(); 
+//                        patprv = ctp_getprv(ictp[j]); 
                         if (unlikely(actual != patprv)) {
                             data_error(ppv, patprv, actual, true);
                         } 
                     } 
-                    pnx = p + 1; 
+                    pnx++; 
                     actual = read_word(pnx); 
-                    patnxt = ctp_getnxt(); 
+                    kdx = ictp[j] + 1; 
+                    patnxt = ctp_read(); 
+//                    patnxt = ctp_getnxt(ictp[j]); 
                     if (unlikely(actual != patnxt)) {
                         data_error(pnx, patnxt, actual, true);
                     }
+#endif
                     write_word(p, pat); 
                     write_word(p, pat_); 
                     write_word(p, pat); 
@@ -8620,6 +8681,7 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
                     }
+#ifdef CHECKDISTURBE
                     if (p != start) {
                         actual = read_word(ppv); 
                         if (unlikely(actual != patprv)) {
@@ -8630,8 +8692,11 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     if (unlikely(actual != patnxt)) {
                         data_error(pnx, patnxt, actual, true);
                     }
+#endif
                 } 
-                pat = ctp_up(); 
+                idx =  ictp[j]; 
+                pat = ctp_get(true); 
+                ictp[j] = idx; 
                 write_word(p, pat); 
             } while (p++ < pe); // test before increment in case pointer overflows
             do_tick(my_cpu);
@@ -8642,19 +8707,37 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
     return ticks; 
 }
 
-static int ctp_ss_topdown(int my_cpu, int iterations) { 
-    testword_t pat, pat_; 
+static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) { 
     int ticks = 0;
-    testword_t actual=0, patnxt=0, patprv=0;
-    testword_t *ppv=NULL, *pnx=NULL; 
+    
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
 
+    if (my_cpu == master_cpu) {
+#ifdef CTPDEBUG
+        display_test_pattern_value(ictp[0]); 
+#else
+        testword_t patt = ctp_rand(); 
+        display_test_pattern_value(patt); 
+#endif
+    }
+
+    flush_caches(my_cpu);
     for (int j = vm_map_size - 1; j >= 0; j--) {
         testword_t *start, *end;
-        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+//        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[j].start;
+        uintptr_t p1 = (uintptr_t)vm_map[j].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
 
         testword_t *p  = end;
         testword_t *ps = end;
-
+#ifdef CHECKDISTURBE
+        testword_t *ppv = p;
+        testword_t *pnx = p; 
+        testword_t patnxt = 0;
+        testword_t patprv = 0; 
+#endif
         bool at_start = false;
         do {
             // take care to avoid pointer underflow
@@ -8670,6 +8753,8 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
             }
             test_addr[my_cpu] = (uintptr_t)p;
             do {
+                testword_t pat, pat_; 
+                testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
                     pat = ctp_rand(); 
                     pat_ = ~pat; 
@@ -8681,21 +8766,27 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     if (unlikely(actual != pat)) {
                         data_error(p, pat, actual, true);
                     }
+#ifdef CHECKDISTURBE
                     // check if adjacent words disturbed 
                     if (p != end) { 
-                        pnx = p + 1; 
+                        pnx++; 
                         actual = read_word(pnx); 
-                        patnxt = ctp_getnxt(); 
+                        kdx = ictp[j] + 1; 
+                        patnxt = ctp_read(); 
+//                        patnxt = ctp_getnxt(ictp[j]); 
                         if (unlikely(actual != patnxt)) {
                             data_error(pnx, patnxt, actual, true);
                         }
                     } 
-                    ppv = p - 1; 
+                    ppv--; 
                     actual = read_word(ppv); 
-                    patprv = ctp_getprv(); 
+                    kdx = ictp[j] - 1; 
+                    patprv = ctp_read(); 
+//                    patprv = ctp_getprv(ictp[j]); 
                     if (unlikely(actual != patprv)) {
                         data_error(ppv, patprv, actual, true);
                     } 
+#endif
                     write_word(p, pat); 
                     write_word(p, pat_); 
                     write_word(p, pat); 
@@ -8704,6 +8795,7 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
                     }
+#ifdef CHECKDISTURBE
                     if (p != end) {
                         actual = read_word(pnx); 
                         if (unlikely(actual != patnxt)) {
@@ -8714,8 +8806,11 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     if (unlikely(actual != patprv)) {
                         data_error(ppv, patprv, actual, true);
                     } 
+#endif
                 } 
-                pat = ctp_down(); 
+                idx =  ictp[j]; 
+                pat = ctp_get(false); 
+                ictp[j] = idx; 
                 write_word(p, pat); 
             } while (p-- > ps); // test before decrement in case pointer overflows
             do_tick(my_cpu);
@@ -8725,15 +8820,12 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
     
     return ticks; 
 }
-*/
 
 #define CTP_SS_LOOPS 2
 
-/*
 int ctp_ss(int my_cpu, int iterations) { 
-    testword_t pat; 
+    long ictp[vm_map_size-1]; 
     int ticks = 0;
-*/
     
 /*
     // run an NV-order sequence (up-down-up-down-up) 
@@ -8750,35 +8842,16 @@ int ctp_ss(int my_cpu, int iterations) {
     ticks += ctp_verify_bottomup(my_cpu, false);
     flush_caches(my_cpu);
 */
-/*
     for (int i=0; i<CTP_SS_LOOPS; i++) { 
-        pat = ctp_set(); 
-        if (my_cpu == master_cpu) {
-            display_test_pattern_value(pat);
-        }
-        ticks += ctp_fill_topdown(my_cpu, false);
-        flush_caches(my_cpu);
-        pat = ctp_set(); 
-        ticks += ctp_ss_topdown(my_cpu, iterations);
-        flush_caches(my_cpu);
-        pat = ctp_set();
-        ticks += ctp_verify_topdown(my_cpu, false);
-        flush_caches(my_cpu);
-        pat = ctp_rst();
-        if (my_cpu == master_cpu) {
-            display_test_pattern_value(pat);
-        }
-        ticks += ctp_fill_bottomup(my_cpu, false);
-        flush_caches(my_cpu);
-        pat = ctp_rst();
-        ticks += ctp_ss_bottomup(my_cpu, iterations);
-        flush_caches(my_cpu);
-        pat = ctp_rst(); 
-        ticks += ctp_verify_bottomup(my_cpu, false);
-        flush_caches(my_cpu);
+        ticks += ctp_fill_topdown(my_cpu, ictp, false);
+        ticks += ctp_ss_topdown(my_cpu, ictp, iterations);
+        ticks += ctp_verify_topdown(my_cpu, ictp, false);
+        ticks += ctp_fill_bottomup(my_cpu, ictp, false);
+        ticks += ctp_ss_bottomup(my_cpu, ictp, iterations);
+        ticks += ctp_verify_bottomup(my_cpu, ictp, false);
     } 
+    flush_caches(my_cpu);
     
     return ticks; 
 }
-*/
 

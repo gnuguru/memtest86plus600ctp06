@@ -255,7 +255,7 @@ int run_test(int my_cpu, int test, int stage, int iterations)
             BAILOUT;
         break;
       case 12: // CTP spot stress 
-//            ticks += ctp_ss(my_cpu, iterations);
+            ticks += ctp_ss(my_cpu, iterations);
             BAILOUT;
         break;
     }

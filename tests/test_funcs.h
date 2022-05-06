@@ -35,6 +35,6 @@ int test_bit_fade(int my_cpu, int stage, int sleep_secs);
 
 int ctp_fill_verify(int my_cpu, int iterations); 
 
-//int ctp_ss(int my_cpu, int iterations); 
+int ctp_ss(int my_cpu, int iterations); 
 
 #endif // TEST_FUNCS_H
