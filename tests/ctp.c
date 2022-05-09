@@ -277,7 +277,7 @@ static const unsigned long CTP[] = {
 0xb41e2f62, 0x7aaceef8, 0xa150c3f9, 0xba086e83, 0x036c6be7, 0xc2ad6504, 0x6d7c57b3, 0x48b13405, 
 0x163a8c61, 0xd8a8cdc9, 0x3eaee241, 0x82d6da75, 0x71ed9b14, 0x5a80e1b6, 0xd2f19fcb, 0xabf45fae, 
 0xd1c06a25, 0x34142683, 0x88fc605b, 0x238538bd, 0xbae1b41b, 0x76dae291, 0xc4c5ccdd, 0xe5668fc2, 
-/*
+#ifdef CTP16K
 0x0e31863c, 0xf6ecf5ee, 0x8c41bf96, 0x67d4419c, 0x6abeccb6, 0x837a79f1, 0xccfb5aec, 0xbb3de77f, 
 0xaefa01fb, 0xb5de00ce, 0xa887eeea, 0x9363af0f, 0x71ad3443, 0x1680f365, 0x56fd1afe, 0x9977d0e0, 
 0xdee32e5e, 0xe4bfc473, 0xb5525175, 0x40bd15ea, 0x34a4314f, 0x2609418f, 0xa2d7a832, 0x6d004254, 
@@ -534,8 +534,8 @@ static const unsigned long CTP[] = {
 0x1de8baee, 0x5bd11c95, 0x5d89db60, 0xbfd96dc0, 0xf94d889c, 0xd287fa12, 0x5e188708, 0x4e69c636, 
 0x1e6ed5bd, 0xc842d07b, 0x6a91cfe9, 0xd61a5bbd, 0x0c62fdc7, 0x425dc0fd, 0x7450d529, 0xf59241ca, 
 0x3f54b51e, 0xae0595f4, 0xb3f9b16a, 0xfb3f22b5, 0xdbbf2e3c, 0x8f1b1039, 0xc3d0e63d, 0x7a34f711, 
-*/
-/*
+#endif
+#ifdef CTP32K
 0x30dc458b, 0xa38c6469, 0x96b77de2, 0x3dc33021, 0x8e83b9fa, 0x56b6df64, 0x9997b22f, 0xd96226e9, 
 0xd00e34a9, 0x9d050b5c, 0x2b14ce98, 0xeebd1aa2, 0xb381eb3d, 0xb1314828, 0xbd15cab9, 0x9e7d374b, 
 0x9e48752b, 0x6e8765e0, 0x13b5fa90, 0xf545fcb3, 0xab50340e, 0x75962645, 0x8baaa61d, 0x703692c5, 
@@ -1048,8 +1048,8 @@ static const unsigned long CTP[] = {
 0xd585bd3a, 0x829b8a95, 0xb0c929c3, 0x6263ee63, 0xebd9d080, 0x67c46f37, 0xb2ef5c2e, 0x1c96821f, 
 0x2cbc76a7, 0xdf2b326c, 0x590c1db1, 0xd566a43d, 0x804aebb4, 0x1791c9d3, 0x8f13543c, 0x29a7b6e5, 
 0x5f07b51f, 0x3ad067fa, 0xc782669a, 0x76d8cf54, 0x0f299241, 0x9d2b2deb, 0x58a454c2, 0x46cf14a6, 
-*/
-/*
+#endif
+#ifdef CTP64K
 0x495eab5a, 0x8a98f19d, 0x5a079c27, 0xd7850c30, 0xc08532dd, 0x6712be15, 0x6723d335, 0x01c8757b, 
 0xaef9bb64, 0x9e9978fd, 0xfa0fa636, 0x59722de0, 0x53c31bc6, 0x3545c09d, 0xbe158557, 0x1b51a7c2, 
 0xf065080d, 0x356ac28e, 0x9a41d755, 0x73365cd4, 0x533acb10, 0x8e77cf75, 0xa404ed20, 0x7334de49, 
@@ -2074,8 +2074,8 @@ static const unsigned long CTP[] = {
 0xa25f8c82, 0x6d773feb, 0xae4162e7, 0xc91ad3b5, 0x7332d925, 0x4dc30189, 0x101dcf81, 0x0f5c2919, 
 0x79e2a1e1, 0x29de7a48, 0x94d1af65, 0x6d64582d, 0xce3db609, 0x072d4552, 0xd144e469, 0x3f9a69e1, 
 0x3c442a48, 0x05717ac5, 0x17d8d485, 0x65334cd8, 0xad85b0b0, 0xfa156217, 0x77b01234, 0xcae6be99, 
-*/
-/*
+#endif
+#ifdef CTP128K
 0xecd0c1ad, 0xfff2b4b4, 0x1a20edd6, 0x46e6b357, 0xcfe77c2e, 0xa6f611db, 0xf65bc159, 0x9dff4443, 
 0x5baa744a, 0x0000c074, 0xddbb387f, 0x81e5e724, 0x3f0798c2, 0xd7eeef16, 0xa3ad0d9e, 0xdb356da3, 
 0x20e264a1, 0x7a5756e3, 0x70e0b75d, 0x393fbea6, 0xe7270010, 0x86b0935e, 0xccb72bb9, 0x39a3d9cb, 
@@ -4124,8 +4124,8 @@ static const unsigned long CTP[] = {
 0x39bc161d, 0x0eb05acb, 0x66eafbb7, 0x963c405b, 0x6f9682eb, 0x0414c774, 0x509ecb1a, 0x31c7d817, 
 0x57c6d9a5, 0xbdf0b95c, 0x9cb7f712, 0x4ad9af17, 0xfab04b31, 0xd26a4b28, 0xd6119200, 0xacd33ae8, 
 0xd8da6602, 0x022bb9dd, 0x4214ed80, 0x47919a21, 0x21801cfb, 0x2a0ceffc, 0xc400c770, 0xf671a312, 
-*/
-/*
+#endif
+#ifdef CTP256K
 0xd193f8c0, 0xb488c9e4, 0x46cac26e, 0x6a762bc1, 0xec04a7f2, 0x2fb29865, 0x19cbadcd, 0xeffce32d, 
 0xeda07dc3, 0xadfa49f7, 0xc3e9a3c4, 0x85b4d800, 0xb62db34a, 0x087d832c, 0xb779a6c5, 0x461be63f, 
 0xccfd7745, 0x5bee4326, 0x9781f818, 0x24f8e80b, 0x0fa67cf0, 0xff6c6259, 0x4c56a4d1, 0xb89174ce, 
@@ -8222,70 +8222,85 @@ static const unsigned long CTP[] = {
 0xa0e4f8fb, 0x8fac7143, 0x3e3238da, 0x1f4591e1, 0x2335402a, 0xf4acbd4f, 0xbed09e4b, 0x5fba1ed2, 
 0xdae0c484, 0xc9185f0d, 0xe157244a, 0x2a054e5b, 0x7ce5c7d1, 0x3d5216b2, 0x4fb26dd6, 0x2afc5da3, 
 0x3e40dc92, 0x9df4abf4, 0xc2e7f01e, 0xcaf1578e, 0x61768aa2, 0xe5139c76, 0x57986def, 0xb4071af2
-*/
+#endif
 }; 
 #endif 
 
-//#define CHECKDISTURBE
-//#define CTPDEBUG
+#define CHECKDISTURBE
+#define CTPDEBUG
 
-static long idx=0, jdx=0; 
+static long idx[MAX_CPUS], jdx[MAX_CPUS]; 
 
-static testword_t ctp_rand() { 
+static testword_t ctp_rand(int my_cpu) { 
     testword_t pat; 
     long ctp_size = sizeof(CTP); 
     
-    if (jdx < 0) { 
-        jdx = ctp_size - 1; 
-        pat = (testword_t) CTP[jdx]; 
+    if (my_cpu == master_cpu) {
+    if (jdx[my_cpu] < 0) { 
+        jdx[my_cpu] = ctp_size - 1; 
+        pat = (testword_t) CTP[jdx[my_cpu]]; 
         return pat; 
     }
-    if (jdx >= ctp_size) { 
-        jdx = 0; 
-        pat = (testword_t) CTP[jdx]; 
+    if (jdx[my_cpu] >= ctp_size) { 
+        jdx[my_cpu] = 0; 
+        pat = (testword_t) CTP[jdx[my_cpu]]; 
         return pat; 
     }
     
-    pat = (testword_t) CTP[jdx]; 
-    if (jdx == (ctp_size - 1)) jdx = 0; 
-    else ++jdx; 
+    pat = (testword_t) CTP[jdx[my_cpu]]; 
+    if (jdx[my_cpu] == (ctp_size - 1)) jdx[my_cpu] = 0; 
+    else ++jdx[my_cpu]; 
     
+    return pat; 
+    }
+    
+    pat = 0xBADBEDC0 + my_cpu; 
     return pat; 
 }
 
-static testword_t ctp_get(bool inc) { 
+static testword_t ctp_get(int my_cpu, bool inc) { 
     testword_t pat; 
     long ctp_size = sizeof(CTP); 
     
-    if (idx < 0) { 
-        idx = ctp_size - 1; 
-        pat = (testword_t) CTP[idx]; 
+    if (my_cpu == master_cpu) {
+    if (idx[my_cpu] < 0) { 
+        idx[my_cpu] = ctp_size - 1; 
+        pat = (testword_t) CTP[idx[my_cpu]]; 
         return pat; 
     }
-    if (idx >= ctp_size) { 
-        idx = 0; 
-        pat = (testword_t) CTP[idx]; 
+    if (idx[my_cpu] >= ctp_size) { 
+        idx[my_cpu] = 0; 
+        pat = (testword_t) CTP[idx[my_cpu]]; 
         return pat; 
     }
     
-    pat = (testword_t) CTP[idx]; 
-    if (inc) ++idx; 
-    else --idx; 
-    if (idx < 0) idx = ctp_size - 1; 
-    if (idx >= ctp_size) idx = 0; 
+    pat = (testword_t) CTP[idx[my_cpu]]; 
+    if (inc) ++idx[my_cpu]; 
+    else --idx[my_cpu]; 
+    if (idx[my_cpu] < 0) idx[my_cpu] = ctp_size - 1; 
+    if (idx[my_cpu] >= ctp_size) idx[my_cpu] = 0; 
     
+    return pat; 
+    }
+    
+    pat = 0xBADBEDC0 + my_cpu; 
     return pat; 
 }
 #ifdef CHECKDISTURBE
- static long kdx=0; 
+ static long kdx[MAX_CPUS]; 
 
-static testword_t ctp_read() { 
+static testword_t ctp_read(int my_cpu) { 
     testword_t pat; 
     long ctp_size = sizeof(CTP); 
     
-    if ((kdx < 0) || (kdx >= ctp_size)) return 0; 
-    pat = (testword_t) CTP[kdx]; 
+    if (my_cpu == master_cpu) {
+    if ((kdx[my_cpu] < 0) || (kdx[my_cpu] >= ctp_size)) return 0xE0BADBED; 
+    pat = (testword_t) CTP[kdx[my_cpu]]; 
     
+    return pat; 
+    }
+    
+    pat = 0xBADBEDC0 + my_cpu; 
     return pat; 
 }
 
@@ -8315,20 +8330,21 @@ static testword_t ctp_getnxt(long i) {
  * CTP & inverted memory fill/verify 
  */
 
-static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
+static int ctp_fill_bottomup(int my_cpu, bool inv) {
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
     
 
     if (my_cpu == master_cpu) {
 //        display_test_pattern_name("CTP-FV upward");
 #ifdef CTPDEBUG
-        idx = ictp[vm_map_size-1]; 
-//        idx = sizeof(CTP); 
-        display_test_pattern_value(idx); 
+        idx[my_cpu] = ictp[my_cpu][vm_map_size-1]; 
+//        idx[my_cpu] = sizeof(CTP); 
+        display_test_pattern_value(idx[my_cpu]); 
 #else
-        testword_t patt = ctp_rand(); 
+        testword_t patt = ctp_rand(my_cpu); 
         display_test_pattern_value(patt); 
 #endif
     }
@@ -8364,9 +8380,9 @@ static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
             do {
                 testword_t dat, pat, pat_; 
 //                pat = 0xBADBAD; 
-                idx =  ictp[i]; 
-                pat = ctp_get(true); 
-                ictp[i] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][i]; 
+                pat = ctp_get(my_cpu, true); 
+                ictp[my_cpu][i] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 write_word(p, dat); 
@@ -8380,10 +8396,11 @@ static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_bottomup(int my_cpu, long *ictp, bool inv) {
+static int ctp_verify_bottomup(int my_cpu, bool inv) {
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
 
     // Verify CTP bottom up
     flush_caches(my_cpu);
@@ -8416,9 +8433,9 @@ static int ctp_verify_bottomup(int my_cpu, long *ictp, bool inv) {
                 testword_t dat, pat, pat_; 
                 testword_t actual = read_word(p);
 //                pat = 0xBADBAD; 
-                idx =  ictp[j]; 
-                pat = ctp_get(true); 
-                ictp[j] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][j]; 
+                pat = ctp_get(my_cpu, true); 
+                ictp[my_cpu][j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 if (unlikely(actual != dat)) {
@@ -8433,13 +8450,14 @@ static int ctp_verify_bottomup(int my_cpu, long *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
+static int ctp_fill_topdown(int my_cpu, bool inv) {
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
 
     if (my_cpu == master_cpu) {
-        testword_t patt = ctp_rand(); 
+        testword_t patt = ctp_rand(my_cpu); 
 //        display_test_pattern_name("CTP-FV downward");
         display_test_pattern_value(patt); 
     }
@@ -8474,9 +8492,9 @@ static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
             do {
                 testword_t dat, pat, pat_; 
 //                pat = 0xBEDBED; 
-                idx =  ictp[j]; 
-                pat = ctp_get(false); 
-                ictp[j] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][j]; 
+                pat = ctp_get(my_cpu, false); 
+                ictp[my_cpu][j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 write_word(p, dat); 
@@ -8489,10 +8507,11 @@ static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_topdown(int my_cpu, long *ictp, bool inv) {
+static int ctp_verify_topdown(int my_cpu, bool inv) {
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
 
     // Verify CTP top down
     flush_caches(my_cpu);
@@ -8525,9 +8544,9 @@ static int ctp_verify_topdown(int my_cpu, long *ictp, bool inv) {
                 testword_t dat, pat, pat_; 
                 testword_t actual = read_word(p);
 //                pat = 0xBEDBED; 
-                idx =  ictp[j]; 
-                pat = ctp_get(false); 
-                ictp[j] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][j]; 
+                pat = ctp_get(my_cpu, false); 
+                ictp[my_cpu][j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 if (unlikely(actual != dat)) {
@@ -8544,7 +8563,6 @@ static int ctp_verify_topdown(int my_cpu, long *ictp, bool inv) {
 
 int ctp_fill_verify(int my_cpu, int iterations)
 {
-    long ictp[vm_map_size-1]; 
     int ticks = 0;
  
 /*
@@ -8578,15 +8596,15 @@ int ctp_fill_verify(int my_cpu, int iterations)
 
     for (int i=0; i<iterations; i++) { 
         // fill & verify CTP from top down
-        ticks += ctp_fill_topdown(my_cpu, ictp, false);
-        ticks += ctp_verify_topdown(my_cpu, ictp, false);
-        ticks += ctp_fill_topdown(my_cpu, ictp, true);
-        ticks += ctp_verify_topdown(my_cpu, ictp, true);
+        ticks += ctp_fill_topdown(my_cpu, false);
+        ticks += ctp_verify_topdown(my_cpu, false);
+        ticks += ctp_fill_topdown(my_cpu, true);
+        ticks += ctp_verify_topdown(my_cpu, true);
         // fill & verify CTP from bottom up 
-        ticks += ctp_fill_bottomup(my_cpu, ictp, false);
-        ticks += ctp_verify_bottomup(my_cpu, ictp, false); 
-        ticks += ctp_fill_bottomup(my_cpu, ictp, true);
-        ticks += ctp_verify_bottomup(my_cpu, ictp, true);
+        ticks += ctp_fill_bottomup(my_cpu, false);
+        ticks += ctp_verify_bottomup(my_cpu, false); 
+        ticks += ctp_fill_bottomup(my_cpu, true);
+        ticks += ctp_verify_bottomup(my_cpu, true);
     } 
     flush_caches(my_cpu);
     
@@ -8597,13 +8615,14 @@ int ctp_fill_verify(int my_cpu, int iterations)
  * CTP spot stress test 
  */
 
-static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) { 
+static int ctp_ss_bottomup(int my_cpu, int iterations) { 
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
 
     if (my_cpu == master_cpu) {
-        testword_t patt = ctp_rand(); 
+        testword_t patt = ctp_rand(my_cpu); 
         display_test_pattern_value(patt); 
     }
 
@@ -8642,7 +8661,7 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
                 testword_t pat, pat_; 
                 testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
-                    pat = ctp_rand(); 
+                    pat = ctp_rand(my_cpu); 
                     pat_ = ~pat; 
                     write_word(p, pat_); 
                     write_word(p, pat); 
@@ -8657,8 +8676,8 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
                     if (p != start) { 
                         ppv--; 
                         actual = read_word(ppv); 
-                        kdx = ictp[j] - 1; 
-                        patprv = ctp_read(); 
+                        kdx[my_cpu] = ictp[my_cpu][j] - 1; 
+                        patprv = ctp_read(my_cpu); 
 //                        patprv = ctp_getprv(ictp[j]); 
                         if (unlikely(actual != patprv)) {
                             data_error(ppv, patprv, actual, true);
@@ -8666,8 +8685,8 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
                     } 
                     pnx++; 
                     actual = read_word(pnx); 
-                    kdx = ictp[j] + 1; 
-                    patnxt = ctp_read(); 
+                    kdx[my_cpu] = ictp[my_cpu][j] + 1; 
+                    patnxt = ctp_read(my_cpu); 
 //                    patnxt = ctp_getnxt(ictp[j]); 
                     if (unlikely(actual != patnxt)) {
                         data_error(pnx, patnxt, actual, true);
@@ -8694,9 +8713,9 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
                     }
 #endif
                 } 
-                idx =  ictp[j]; 
-                pat = ctp_get(true); 
-                ictp[j] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][j]; 
+                pat = ctp_get(my_cpu, true); 
+                ictp[my_cpu][j] = idx[my_cpu]; 
                 write_word(p, pat); 
             } while (p++ < pe); // test before increment in case pointer overflows
             do_tick(my_cpu);
@@ -8707,16 +8726,18 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
     return ticks; 
 }
 
-static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) { 
+static int ctp_ss_topdown(int my_cpu, int iterations) { 
+    long ictp[MAX_CPUS][vm_map_size-1]; 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
 
     if (my_cpu == master_cpu) {
 #ifdef CTPDEBUG
-        display_test_pattern_value(ictp[0]); 
+//        display_test_pattern_value(ictp[my_cpu][0]); 
+        display_test_pattern_value(vm_map_size); 
 #else
-        testword_t patt = ctp_rand(); 
+        testword_t patt = ctp_rand(my_cpu); 
         display_test_pattern_value(patt); 
 #endif
     }
@@ -8756,7 +8777,7 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
                 testword_t pat, pat_; 
                 testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
-                    pat = ctp_rand(); 
+                    pat = ctp_rand(my_cpu); 
                     pat_ = ~pat; 
                     write_word(p, pat_); 
                     write_word(p, pat); 
@@ -8771,8 +8792,8 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
                     if (p != end) { 
                         pnx++; 
                         actual = read_word(pnx); 
-                        kdx = ictp[j] + 1; 
-                        patnxt = ctp_read(); 
+                        kdx[my_cpu] = ictp[my_cpu][j] + 1; 
+                        patnxt = ctp_read(my_cpu); 
 //                        patnxt = ctp_getnxt(ictp[j]); 
                         if (unlikely(actual != patnxt)) {
                             data_error(pnx, patnxt, actual, true);
@@ -8780,8 +8801,8 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
                     } 
                     ppv--; 
                     actual = read_word(ppv); 
-                    kdx = ictp[j] - 1; 
-                    patprv = ctp_read(); 
+                    kdx[my_cpu] = ictp[my_cpu][j] - 1; 
+                    patprv = ctp_read(my_cpu); 
 //                    patprv = ctp_getprv(ictp[j]); 
                     if (unlikely(actual != patprv)) {
                         data_error(ppv, patprv, actual, true);
@@ -8808,9 +8829,9 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
                     } 
 #endif
                 } 
-                idx =  ictp[j]; 
-                pat = ctp_get(false); 
-                ictp[j] = idx; 
+                idx[my_cpu] =  ictp[my_cpu][j]; 
+                pat = ctp_get(my_cpu, false); 
+                ictp[my_cpu][j] = idx[my_cpu]; 
                 write_word(p, pat); 
             } while (p-- > ps); // test before decrement in case pointer overflows
             do_tick(my_cpu);
@@ -8824,7 +8845,6 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
 #define CTP_SS_LOOPS 2
 
 int ctp_ss(int my_cpu, int iterations) { 
-    long ictp[vm_map_size-1]; 
     int ticks = 0;
     
 /*
@@ -8843,12 +8863,12 @@ int ctp_ss(int my_cpu, int iterations) {
     flush_caches(my_cpu);
 */
     for (int i=0; i<CTP_SS_LOOPS; i++) { 
-        ticks += ctp_fill_topdown(my_cpu, ictp, false);
-        ticks += ctp_ss_topdown(my_cpu, ictp, iterations);
-        ticks += ctp_verify_topdown(my_cpu, ictp, false);
-        ticks += ctp_fill_bottomup(my_cpu, ictp, false);
-        ticks += ctp_ss_bottomup(my_cpu, ictp, iterations);
-        ticks += ctp_verify_bottomup(my_cpu, ictp, false);
+        ticks += ctp_fill_topdown(my_cpu, false);
+        ticks += ctp_ss_topdown(my_cpu, iterations);
+        ticks += ctp_verify_topdown(my_cpu, false);
+        ticks += ctp_fill_bottomup(my_cpu, false);
+        ticks += ctp_ss_bottomup(my_cpu, iterations);
+        ticks += ctp_verify_bottomup(my_cpu, false);
     } 
     flush_caches(my_cpu);
     
