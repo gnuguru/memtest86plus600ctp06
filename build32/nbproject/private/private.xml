@@ -7,62 +7,52 @@
         <activeConfTypeElem>0</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="17">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="27">
         <file>
             <url>file:/home/gnu/development/mt86p6ctp06/tests/ctp.c</url>
-            <bookmark id="6">
+            <bookmark id="26">
                 <name/>
-                <line>8227</line>
+                <line>16</line>
                 <key/>
             </bookmark>
-            <bookmark id="17">
+            <bookmark id="27">
                 <name/>
-                <line>8227</line>
+                <line>151</line>
                 <key/>
             </bookmark>
-            <bookmark id="16">
+            <bookmark id="23">
                 <name/>
-                <line>8227</line>
-                <key/>
-            </bookmark>
-            <bookmark id="15">
-                <name/>
-                <line>8227</line>
-                <key/>
-            </bookmark>
-            <bookmark id="14">
-                <name/>
-                <line>8227</line>
-                <key/>
-            </bookmark>
-            <bookmark id="13">
-                <name/>
-                <line>8227</line>
-                <key/>
-            </bookmark>
-            <bookmark id="5">
-                <name/>
-                <line>8227</line>
-                <key/>
-            </bookmark>
-            <bookmark id="12">
-                <name/>
-                <line>8228</line>
+                <line>8230</line>
                 <key/>
             </bookmark>
             <bookmark id="7">
                 <name/>
-                <line>8280</line>
+                <line>8334</line>
+                <key/>
+            </bookmark>
+            <bookmark id="20">
+                <name/>
+                <line>8453</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>8504</line>
+                <line>8562</line>
                 <key/>
             </bookmark>
-            <bookmark id="8">
+            <bookmark id="22">
                 <name/>
-                <line>8732</line>
+                <line>8617</line>
+                <key/>
+            </bookmark>
+            <bookmark id="19">
+                <name/>
+                <line>8727</line>
+                <key/>
+            </bookmark>
+            <bookmark id="25">
+                <name/>
+                <line>8844</line>
                 <key/>
             </bookmark>
         </file>
@@ -95,9 +85,7 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gnu/development/mt86p6ctp06/tests/own_addr.c</file>
             <file>file:/home/gnu/development/mt86p6ctp06/tests/ctp.c</file>
-            <file>file:/home/gnu/development/mt86p6ctp06/tests/addr_walk1.c</file>
             <file>file:/home/gnu/development/mt86p6ctp06/tests/tests.h</file>
             <file>file:/home/gnu/development/mt86p6ctp06/app/test.h</file>
             <file>file:/home/gnu/development/mt86p6ctp06/tests/tests.c</file>
