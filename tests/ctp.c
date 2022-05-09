@@ -8226,8 +8226,8 @@ static const unsigned long CTP[] = {
 }; 
 #endif 
 
-#define CHECKDISTURBE
-#define CTPDEBUG
+//#define CHECKDISTURBE
+//#define CTPDEBUG
 
 static long idx[MAX_CPUS], jdx[MAX_CPUS]; 
 
@@ -8330,19 +8330,19 @@ static testword_t ctp_getnxt(long i) {
  * CTP & inverted memory fill/verify 
  */
 
-static int ctp_fill_bottomup(int my_cpu, bool inv) {
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
     
 
     if (my_cpu == master_cpu) {
 //        display_test_pattern_name("CTP-FV upward");
 #ifdef CTPDEBUG
-        idx[my_cpu] = ictp[my_cpu][vm_map_size-1]; 
+//        idx[my_cpu] = ictp[vm_map_size-1]; 
 //        idx[my_cpu] = sizeof(CTP); 
-        display_test_pattern_value(idx[my_cpu]); 
+//        display_test_pattern_value(idx[my_cpu]); 
+        display_test_pattern_value(my_cpu); 
 #else
         testword_t patt = ctp_rand(my_cpu); 
         display_test_pattern_value(patt); 
@@ -8380,9 +8380,9 @@ static int ctp_fill_bottomup(int my_cpu, bool inv) {
             do {
                 testword_t dat, pat, pat_; 
 //                pat = 0xBADBAD; 
-                idx[my_cpu] =  ictp[my_cpu][i]; 
+                idx[my_cpu] =  ictp[i]; 
                 pat = ctp_get(my_cpu, true); 
-                ictp[my_cpu][i] = idx[my_cpu]; 
+                ictp[i] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 write_word(p, dat); 
@@ -8396,11 +8396,10 @@ static int ctp_fill_bottomup(int my_cpu, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_bottomup(int my_cpu, bool inv) {
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_verify_bottomup(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
 
     // Verify CTP bottom up
     flush_caches(my_cpu);
@@ -8433,9 +8432,9 @@ static int ctp_verify_bottomup(int my_cpu, bool inv) {
                 testword_t dat, pat, pat_; 
                 testword_t actual = read_word(p);
 //                pat = 0xBADBAD; 
-                idx[my_cpu] =  ictp[my_cpu][j]; 
+                idx[my_cpu] =  ictp[j]; 
                 pat = ctp_get(my_cpu, true); 
-                ictp[my_cpu][j] = idx[my_cpu]; 
+                ictp[j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 if (unlikely(actual != dat)) {
@@ -8450,11 +8449,10 @@ static int ctp_verify_bottomup(int my_cpu, bool inv) {
     return ticks; 
 }
 
-static int ctp_fill_topdown(int my_cpu, bool inv) {
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
 
     if (my_cpu == master_cpu) {
         testword_t patt = ctp_rand(my_cpu); 
@@ -8492,9 +8490,9 @@ static int ctp_fill_topdown(int my_cpu, bool inv) {
             do {
                 testword_t dat, pat, pat_; 
 //                pat = 0xBEDBED; 
-                idx[my_cpu] =  ictp[my_cpu][j]; 
+                idx[my_cpu] =  ictp[j]; 
                 pat = ctp_get(my_cpu, false); 
-                ictp[my_cpu][j] = idx[my_cpu]; 
+                ictp[j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 write_word(p, dat); 
@@ -8507,11 +8505,10 @@ static int ctp_fill_topdown(int my_cpu, bool inv) {
     return ticks; 
 }
 
-static int ctp_verify_topdown(int my_cpu, bool inv) {
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_verify_topdown(int my_cpu, long *ictp, bool inv) {
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
 
     // Verify CTP top down
     flush_caches(my_cpu);
@@ -8544,9 +8541,9 @@ static int ctp_verify_topdown(int my_cpu, bool inv) {
                 testword_t dat, pat, pat_; 
                 testword_t actual = read_word(p);
 //                pat = 0xBEDBED; 
-                idx[my_cpu] =  ictp[my_cpu][j]; 
+                idx[my_cpu] =  ictp[j]; 
                 pat = ctp_get(my_cpu, false); 
-                ictp[my_cpu][j] = idx[my_cpu]; 
+                ictp[j] = idx[my_cpu]; 
                 pat_ = ~pat; 
                 dat = inv ? pat_ : pat; 
                 if (unlikely(actual != dat)) {
@@ -8563,6 +8560,7 @@ static int ctp_verify_topdown(int my_cpu, bool inv) {
 
 int ctp_fill_verify(int my_cpu, int iterations)
 {
+    long ictp[vm_map_size-1]; 
     int ticks = 0;
  
 /*
@@ -8596,15 +8594,15 @@ int ctp_fill_verify(int my_cpu, int iterations)
 
     for (int i=0; i<iterations; i++) { 
         // fill & verify CTP from top down
-        ticks += ctp_fill_topdown(my_cpu, false);
-        ticks += ctp_verify_topdown(my_cpu, false);
-        ticks += ctp_fill_topdown(my_cpu, true);
-        ticks += ctp_verify_topdown(my_cpu, true);
+        ticks += ctp_fill_topdown(my_cpu, ictp, false);
+        ticks += ctp_verify_topdown(my_cpu, ictp, false);
+        ticks += ctp_fill_topdown(my_cpu, ictp, true);
+        ticks += ctp_verify_topdown(my_cpu, ictp, true);
         // fill & verify CTP from bottom up 
-        ticks += ctp_fill_bottomup(my_cpu, false);
-        ticks += ctp_verify_bottomup(my_cpu, false); 
-        ticks += ctp_fill_bottomup(my_cpu, true);
-        ticks += ctp_verify_bottomup(my_cpu, true);
+        ticks += ctp_fill_bottomup(my_cpu, ictp, false);
+        ticks += ctp_verify_bottomup(my_cpu, ictp, false); 
+        ticks += ctp_fill_bottomup(my_cpu, ictp, true);
+        ticks += ctp_verify_bottomup(my_cpu, ictp, true);
     } 
     flush_caches(my_cpu);
     
@@ -8615,11 +8613,10 @@ int ctp_fill_verify(int my_cpu, int iterations)
  * CTP spot stress test 
  */
 
-static int ctp_ss_bottomup(int my_cpu, int iterations) { 
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) { 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = i; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = i; 
 
     if (my_cpu == master_cpu) {
         testword_t patt = ctp_rand(my_cpu); 
@@ -8676,7 +8673,7 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     if (p != start) { 
                         ppv--; 
                         actual = read_word(ppv); 
-                        kdx[my_cpu] = ictp[my_cpu][j] - 1; 
+                        kdx[my_cpu] = ictp[j] - 1; 
                         patprv = ctp_read(my_cpu); 
 //                        patprv = ctp_getprv(ictp[j]); 
                         if (unlikely(actual != patprv)) {
@@ -8685,7 +8682,7 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     } 
                     pnx++; 
                     actual = read_word(pnx); 
-                    kdx[my_cpu] = ictp[my_cpu][j] + 1; 
+                    kdx[my_cpu] = ictp[j] + 1; 
                     patnxt = ctp_read(my_cpu); 
 //                    patnxt = ctp_getnxt(ictp[j]); 
                     if (unlikely(actual != patnxt)) {
@@ -8713,9 +8710,9 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
                     }
 #endif
                 } 
-                idx[my_cpu] =  ictp[my_cpu][j]; 
+                idx[my_cpu] =  ictp[j]; 
                 pat = ctp_get(my_cpu, true); 
-                ictp[my_cpu][j] = idx[my_cpu]; 
+                ictp[j] = idx[my_cpu]; 
                 write_word(p, pat); 
             } while (p++ < pe); // test before increment in case pointer overflows
             do_tick(my_cpu);
@@ -8726,11 +8723,10 @@ static int ctp_ss_bottomup(int my_cpu, int iterations) {
     return ticks; 
 }
 
-static int ctp_ss_topdown(int my_cpu, int iterations) { 
-    long ictp[MAX_CPUS][vm_map_size-1]; 
+static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) { 
     int ticks = 0;
     
-    for (int i = 0; i < vm_map_size; i++) ictp[my_cpu][i] = sizeof(CTP) - i - 1; 
+    for (int i = 0; i < vm_map_size; i++) ictp[i] = sizeof(CTP) - i - 1; 
 
     if (my_cpu == master_cpu) {
 #ifdef CTPDEBUG
@@ -8792,7 +8788,7 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     if (p != end) { 
                         pnx++; 
                         actual = read_word(pnx); 
-                        kdx[my_cpu] = ictp[my_cpu][j] + 1; 
+                        kdx[my_cpu] = ictp[j] + 1; 
                         patnxt = ctp_read(my_cpu); 
 //                        patnxt = ctp_getnxt(ictp[j]); 
                         if (unlikely(actual != patnxt)) {
@@ -8801,7 +8797,7 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     } 
                     ppv--; 
                     actual = read_word(ppv); 
-                    kdx[my_cpu] = ictp[my_cpu][j] - 1; 
+                    kdx[my_cpu] = ictp[j] - 1; 
                     patprv = ctp_read(my_cpu); 
 //                    patprv = ctp_getprv(ictp[j]); 
                     if (unlikely(actual != patprv)) {
@@ -8829,9 +8825,9 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
                     } 
 #endif
                 } 
-                idx[my_cpu] =  ictp[my_cpu][j]; 
+                idx[my_cpu] =  ictp[j]; 
                 pat = ctp_get(my_cpu, false); 
-                ictp[my_cpu][j] = idx[my_cpu]; 
+                ictp[j] = idx[my_cpu]; 
                 write_word(p, pat); 
             } while (p-- > ps); // test before decrement in case pointer overflows
             do_tick(my_cpu);
@@ -8845,6 +8841,7 @@ static int ctp_ss_topdown(int my_cpu, int iterations) {
 #define CTP_SS_LOOPS 2
 
 int ctp_ss(int my_cpu, int iterations) { 
+    long ictp[vm_map_size-1]; 
     int ticks = 0;
     
 /*
@@ -8863,12 +8860,12 @@ int ctp_ss(int my_cpu, int iterations) {
     flush_caches(my_cpu);
 */
     for (int i=0; i<CTP_SS_LOOPS; i++) { 
-        ticks += ctp_fill_topdown(my_cpu, false);
-        ticks += ctp_ss_topdown(my_cpu, iterations);
-        ticks += ctp_verify_topdown(my_cpu, false);
-        ticks += ctp_fill_bottomup(my_cpu, false);
-        ticks += ctp_ss_bottomup(my_cpu, iterations);
-        ticks += ctp_verify_bottomup(my_cpu, false);
+        ticks += ctp_fill_topdown(my_cpu, ictp, false);
+        ticks += ctp_ss_topdown(my_cpu, ictp, iterations);
+        ticks += ctp_verify_topdown(my_cpu, ictp, false);
+        ticks += ctp_fill_bottomup(my_cpu, ictp, false);
+        ticks += ctp_ss_bottomup(my_cpu, ictp, iterations);
+        ticks += ctp_verify_bottomup(my_cpu, ictp, false);
     } 
     flush_caches(my_cpu);
     
