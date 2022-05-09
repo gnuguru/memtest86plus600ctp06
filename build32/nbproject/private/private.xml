@@ -7,7 +7,7 @@
         <activeConfTypeElem>0</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="26">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="27">
         <file>
             <url>file:/home/gnu/development/mt86p6ctp06/tests/ctp.c</url>
             <bookmark id="26">
@@ -15,29 +15,29 @@
                 <line>16</line>
                 <key/>
             </bookmark>
-            <bookmark id="24">
+            <bookmark id="27">
                 <name/>
-                <line>278</line>
+                <line>151</line>
                 <key/>
             </bookmark>
             <bookmark id="23">
                 <name/>
-                <line>8228</line>
+                <line>8230</line>
                 <key/>
             </bookmark>
             <bookmark id="7">
                 <name/>
-                <line>8332</line>
+                <line>8334</line>
                 <key/>
             </bookmark>
             <bookmark id="20">
                 <name/>
-                <line>8452</line>
+                <line>8453</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>8563</line>
+                <line>8562</line>
                 <key/>
             </bookmark>
             <bookmark id="22">
@@ -47,12 +47,12 @@
             </bookmark>
             <bookmark id="19">
                 <name/>
-                <line>8728</line>
+                <line>8727</line>
                 <key/>
             </bookmark>
             <bookmark id="25">
                 <name/>
-                <line>8846</line>
+                <line>8844</line>
                 <key/>
             </bookmark>
         </file>
