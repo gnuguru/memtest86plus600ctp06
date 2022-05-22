@@ -8228,7 +8228,7 @@ static const unsigned long CTP[] = {
 }; 
 #endif 
 
-//#define CHECKDISTURBE
+#define CHECKDISTURB
 //#define CTPDEBUG
 
 static long idx[MAX_CPUS], jdx[MAX_CPUS]; 
@@ -8288,7 +8288,7 @@ static testword_t ctp_get(int my_cpu, bool inc) {
     pat = 0xBADBEDC0 + my_cpu; 
     return pat; 
 }
-#ifdef CHECKDISTURBE
+#ifdef CHECKDISTURB
  static long kdx[MAX_CPUS]; 
 
 static testword_t ctp_read(int my_cpu) { 
@@ -8386,7 +8386,10 @@ static int ctp_fill_bottomup(int my_cpu, long *ictp, bool inv) {
                 pat = ctp_get(my_cpu, true); 
                 ictp[i] = idx[my_cpu]; 
                 pat_ = ~pat; 
-                dat = inv ? pat_ : pat; 
+//                dat = inv ? pat_ : pat; 
+                dat = inv ? pat : pat_; 
+                write_word(p, dat); // write the inv-pat 
+                dat = ~dat; 
                 write_word(p, dat); 
             } while (p++ < pe); // test before increment in case pointer overflows
 
@@ -8496,7 +8499,10 @@ static int ctp_fill_topdown(int my_cpu, long *ictp, bool inv) {
                 pat = ctp_get(my_cpu, false); 
                 ictp[j] = idx[my_cpu]; 
                 pat_ = ~pat; 
-                dat = inv ? pat_ : pat; 
+//                dat = inv ? pat_ : pat; 
+                dat = inv ? pat : pat_; 
+                write_word(p, dat); // write the inv-pat 
+                dat = ~dat; 
                 write_word(p, dat); 
             } while (p-- > ps); // test before decrement in case pointer overflows
             do_tick(my_cpu);
@@ -8636,12 +8642,14 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
 
         testword_t *p  = start;
         testword_t *pe = start;
-#ifdef CHECKDISTURBE
+/*
+#ifdef CHECKDISTURB
         testword_t *ppv = p;
         testword_t *pnx = p; 
         testword_t patnxt = 0;
         testword_t patprv = 0; 
 #endif
+*/
         bool at_end = false;
         do {
             // take care to avoid pointer overflow
@@ -8658,57 +8666,71 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
             test_addr[my_cpu] = (uintptr_t)p;
             do {
                 testword_t pat, pat_; 
+                testword_t patnxt, patprv; 
                 testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
-                    pat = ctp_rand(my_cpu); 
-                    pat_ = ~pat; 
+//                    pat = ctp_rand(my_cpu); 
+                    pat_ = ~ctp_rand(my_cpu); 
+//                    pat_ = ~pat; 
+//                    write_word(p, pat_); 
+//                    write_word(p, pat); 
                     write_word(p, pat_); 
+                    pat = ~pat_; 
                     write_word(p, pat); 
-                    write_word(p, pat_); 
-                    write_word(p, pat); 
+                    patnxt = patprv = pat; 
                     actual = read_word(p);
                     if (unlikely(actual != pat)) {
                         data_error(p, pat, actual, true);
                     }
-#ifdef CHECKDISTURBE
+#ifdef CHECKDISTURB
                     // check if adjacent words disturbed 
                     if (p != start) { 
-                        ppv--; 
-                        actual = read_word(ppv); 
+//                        ppv--; 
+//                        actual = read_word(ppv); 
+                        actual = read_word(p - 1); 
                         kdx[my_cpu] = ictp[j] - 1; 
                         patprv = ctp_read(my_cpu); 
 //                        patprv = ctp_getprv(ictp[j]); 
                         if (unlikely(actual != patprv)) {
-                            data_error(ppv, patprv, actual, true);
+//                            data_error(ppv, patprv, actual, true);
+                            data_error((p - 1), patprv, actual, true);
                         } 
                     } 
-                    pnx++; 
-                    actual = read_word(pnx); 
+//                    pnx++; 
+//                    actual = read_word(pnx); 
+                    actual = read_word(p + 1); 
                     kdx[my_cpu] = ictp[j] + 1; 
                     patnxt = ctp_read(my_cpu); 
 //                    patnxt = ctp_getnxt(ictp[j]); 
                     if (unlikely(actual != patnxt)) {
-                        data_error(pnx, patnxt, actual, true);
+//                        data_error(pnx, patnxt, actual, true);
+                        data_error((p + 1), patnxt, actual, true);
                     }
 #endif
+//                    write_word(p, pat); 
+//                    write_word(p, pat_); 
                     write_word(p, pat); 
+                    actual = pat;   // I know this is weird, but I'm just not sure if this could be necessary.. cause other test codes don't have consecutive to the same address..
                     write_word(p, pat_); 
-                    write_word(p, pat); 
-                    write_word(p, pat_); 
+                    pat = pat_;     // Can't find any read-immediately-after-write codes in other tests, and CTP codes do behave weird right now.. so just wondering if adding some delay here might help?  
                     actual = read_word(p);
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
                     }
-#ifdef CHECKDISTURBE
+#ifdef CHECKDISTURB
                     if (p != start) {
-                        actual = read_word(ppv); 
+//                        actual = read_word(ppv); 
+                        actual = read_word(p - 1); 
                         if (unlikely(actual != patprv)) {
-                            data_error(ppv, patprv, actual, true);
+//                            data_error(ppv, patprv, actual, true);
+                            data_error((p - 1), patprv, actual, true);
                         } 
                     } 
-                    actual = read_word(pnx); 
+//                    actual = read_word(pnx); 
+                    actual = read_word(p + 1); 
                     if (unlikely(actual != patnxt)) {
-                        data_error(pnx, patnxt, actual, true);
+//                        data_error(pnx, patnxt, actual, true);
+                        data_error((p + 1), patnxt, actual, true);
                     }
 #endif
                 } 
@@ -8751,12 +8773,14 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
 
         testword_t *p  = end;
         testword_t *ps = end;
-#ifdef CHECKDISTURBE
+/*
+#ifdef CHECKDISTURB
         testword_t *ppv = p;
         testword_t *pnx = p; 
         testword_t patnxt = 0;
         testword_t patprv = 0; 
 #endif
+*/
         bool at_start = false;
         do {
             // take care to avoid pointer underflow
@@ -8773,57 +8797,71 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
             test_addr[my_cpu] = (uintptr_t)p;
             do {
                 testword_t pat, pat_; 
+                testword_t patnxt, patprv; 
                 testword_t actual=0; 
                 for (int i=0; i < iterations; i++) { 
-                    pat = ctp_rand(my_cpu); 
-                    pat_ = ~pat; 
+//                    pat = ctp_rand(my_cpu); 
+//                    pat_ = ~pat; 
+                    pat_ = ~ctp_rand(my_cpu); 
                     write_word(p, pat_); 
+                    pat = ~pat_; 
                     write_word(p, pat); 
-                    write_word(p, pat_); 
-                    write_word(p, pat); 
+//                    write_word(p, pat_); 
+//                    write_word(p, pat); 
+                    patnxt = patprv = pat; 
                     actual = read_word(p);
                     if (unlikely(actual != pat)) {
                         data_error(p, pat, actual, true);
                     }
-#ifdef CHECKDISTURBE
+#ifdef CHECKDISTURB
                     // check if adjacent words disturbed 
                     if (p != end) { 
-                        pnx++; 
-                        actual = read_word(pnx); 
+//                        pnx++; 
+//                        actual = read_word(pnx); 
+                        actual = read_word(p + 1); 
                         kdx[my_cpu] = ictp[j] + 1; 
                         patnxt = ctp_read(my_cpu); 
 //                        patnxt = ctp_getnxt(ictp[j]); 
                         if (unlikely(actual != patnxt)) {
-                            data_error(pnx, patnxt, actual, true);
+//                            data_error(pnx, patnxt, actual, true);
+                            data_error((p + 1), patnxt, actual, true);
                         }
                     } 
-                    ppv--; 
-                    actual = read_word(ppv); 
+//                    ppv--; 
+//                    actual = read_word(ppv); 
+                    actual = read_word(p - 1); 
                     kdx[my_cpu] = ictp[j] - 1; 
                     patprv = ctp_read(my_cpu); 
 //                    patprv = ctp_getprv(ictp[j]); 
                     if (unlikely(actual != patprv)) {
-                        data_error(ppv, patprv, actual, true);
+//                        data_error(ppv, patprv, actual, true);
+                        data_error((p - 1), patprv, actual, true);
                     } 
 #endif
                     write_word(p, pat); 
+                    actual = pat; 
                     write_word(p, pat_); 
-                    write_word(p, pat); 
-                    write_word(p, pat_); 
+//                    write_word(p, pat); 
+//                    write_word(p, pat_); 
+                    pat = pat_; 
                     actual = read_word(p);
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
                     }
-#ifdef CHECKDISTURBE
+#ifdef CHECKDISTURB
                     if (p != end) {
-                        actual = read_word(pnx); 
+//                        actual = read_word(pnx); 
+                        actual = read_word(p + 1); 
                         if (unlikely(actual != patnxt)) {
-                            data_error(pnx, patnxt, actual, true);
+//                            data_error(pnx, patnxt, actual, true);
+                            data_error((p + 1), patnxt, actual, true);
                         }
                     } 
-                    actual = read_word(ppv); 
+//                    actual = read_word(ppv); 
+                    actual = read_word(p - 1); 
                     if (unlikely(actual != patprv)) {
-                        data_error(ppv, patprv, actual, true);
+//                        data_error(ppv, patprv, actual, true);
+                        data_error((p - 1), patprv, actual, true);
                     } 
 #endif
                 } 
