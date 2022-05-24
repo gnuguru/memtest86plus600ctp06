@@ -8228,7 +8228,7 @@ static const unsigned long CTP[] = {
 }; 
 #endif 
 
-#define CHECKDISTURB
+//#define CHECKDISTURB
 //#define CTPDEBUG
 
 static long idx[MAX_CPUS], jdx[MAX_CPUS]; 
@@ -8296,10 +8296,11 @@ static testword_t ctp_read(int my_cpu) {
     long ctp_size = sizeof(CTP); 
     
     if (my_cpu == master_cpu) {
-    if ((kdx[my_cpu] < 0) || (kdx[my_cpu] >= ctp_size)) return 0xE0BADBED; 
-    pat = (testword_t) CTP[kdx[my_cpu]]; 
-    
-    return pat; 
+//    if ((kdx[my_cpu] < 0) || (kdx[my_cpu] >= ctp_size)) return 0xE0BADBED; // if CHECKDISTURB defined this line always reached.. still don't understand this 
+        if (kdx[my_cpu] < 0) kdx[my_cpu] = ctp_size - 1;
+        if (kdx[my_cpu] >= ctp_size) kdx[my_cpu] = 0; 
+        pat = (testword_t) CTP[kdx[my_cpu]]; 
+        return pat; 
     }
     
     pat = 0xBADBEDC0 + my_cpu; 
@@ -8710,9 +8711,9 @@ static int ctp_ss_bottomup(int my_cpu, long *ictp, int iterations) {
 //                    write_word(p, pat); 
 //                    write_word(p, pat_); 
                     write_word(p, pat); 
-                    actual = pat;   // I know this is weird, but I'm just not sure if this could be necessary.. cause other test codes don't have consecutive to the same address..
+                    actual = patnxt;   // I know this is weird, but I'm just not sure if this could be necessary.. cause other test codes don't have consecutive to the same address..
                     write_word(p, pat_); 
-                    pat = pat_;     // Can't find any read-immediately-after-write codes in other tests, and CTP codes do behave weird right now.. so just wondering if adding some delay here might help?  
+                    patprv = pat_;     // Can't find any read-immediately-after-write codes in other tests, and CTP codes do behave weird right now.. so just wondering if adding some delay here might help?  
                     actual = read_word(p);
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
@@ -8839,11 +8840,11 @@ static int ctp_ss_topdown(int my_cpu, long *ictp, int iterations) {
                     } 
 #endif
                     write_word(p, pat); 
-                    actual = pat; 
+                    actual = patnxt; 
                     write_word(p, pat_); 
 //                    write_word(p, pat); 
 //                    write_word(p, pat_); 
-                    pat = pat_; 
+                    patprv = pat_; 
                     actual = read_word(p);
                     if (unlikely(actual != pat_)) {
                         data_error(p, pat_, actual, true);
