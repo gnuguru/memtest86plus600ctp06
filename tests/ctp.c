@@ -19,6 +19,7 @@ static const unsigned long long CTP[] = {
 0x34484f16535d9fc9, 0xd4fea662382cb179, 0x850a1a4d124fcd50, 0x76863cb01b4a364e, 
 0x7092f62e7a4fb906, 0x532abe88ba95758b, 0x30b4c78f9fad8930, 0x39e821e89d8eef04, 
 }; 
+//#define CROSSDSTBDAT 0x5555555555555555
 #else 
 static const unsigned long CTP[] = {
 0x34484f16, 0x535d9fc9, 0xd4fea662, 0x382cb179, 0x850a1a4d, 0x124fcd50, 0x76863cb0, 0x1b4a364e, 
@@ -8226,8 +8227,10 @@ static const unsigned long CTP[] = {
 0x3e40dc92, 0x9df4abf4, 0xc2e7f01e, 0xcaf1578e, 0x61768aa2, 0xe5139c76, 0x57986def, 0xb4071af2
 #endif
 }; 
+//#define CROSSDSTBDAT 0x55555555
 #endif 
 
+#define TESTMINMAXCXDSTB
 //#define CHECKDISTURB
 //#define CTPDEBUG
 
@@ -8328,6 +8331,240 @@ static testword_t ctp_getnxt(long i) {
     return pat; 
 }
 */
+#endif
+/* 
+ * Fill & Verify Max/Min 
+ */
+#ifdef TESTMINMAXCXDSTB
+static int fill1A_bottomup(int my_cpu, bool cxmode, bool inv) {
+    int ticks = 0; 
+    testword_t patt = 0; 
+    
+//    if (cxmode) patt = `CROSSDSTBDAT; 
+#if TESTWORD_WIDTH > 32 
+    if (cxmode) patt = 0x5555555555555555; 
+#else
+    if (cxmode) patt = 0x55555555; 
+#endif
+    if (inv) patt = ~patt; 
+
+    if (my_cpu == master_cpu) {
+        display_test_pattern_value(~patt); 
+    }
+
+    flush_caches(my_cpu);
+    for (int i = 0; i < vm_map_size; i++) {
+        testword_t *start, *end;
+//        calculate_chunk(&start, &end, my_cpu, i, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[i].start;
+        uintptr_t p1 = (uintptr_t)vm_map[i].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
+
+        testword_t *p  = start;
+        testword_t *pe = start;
+        testword_t dat = patt; 
+        
+        bool at_end = false;
+        do {
+            // take care to avoid pointer overflow
+            if ((end - pe) >= SPIN_SIZE) {
+                pe += SPIN_SIZE - 1;
+            } else {
+                at_end = true;
+                pe = end;
+            }
+            ticks++;
+            if (my_cpu < 0) {
+                continue;
+            }
+            test_addr[my_cpu] = (uintptr_t)p;
+            
+            do {
+                testword_t pat = dat; 
+                write_word(p, pat); // write the inv-pat 
+                pat = ~pat; 
+                write_word(p, pat); 
+//                if (cxmode) dat = pat; 
+                dat = pat; 
+            } while (p++ < pe); // test before increment in case pointer overflows
+
+            do_tick(my_cpu);
+            BAILOUT;
+        } while (!at_end && ++pe); // advance pe to next start point
+    } 
+    
+    return ticks; 
+}
+
+static int verify05_bottomup(int my_cpu, bool cxmode, bool inv) {
+    int ticks = 0;
+    testword_t patt = 0; 
+    
+//    if (cxmode) patt = `CROSSDSTBDAT; 
+#if TESTWORD_WIDTH > 32 
+    if (cxmode) patt = 0x5555555555555555; 
+#else
+    if (cxmode) patt = 0x55555555; 
+#endif
+    if (inv) patt = ~patt;
+
+    flush_caches(my_cpu);
+    for (int j = 0; j < vm_map_size; j++) {
+        testword_t *start, *end;
+//        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[j].start;
+        uintptr_t p1 = (uintptr_t)vm_map[j].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
+
+        testword_t *p  = start;
+        testword_t *pe = start;
+        testword_t dat = patt; 
+
+        bool at_end = false;
+        do {
+            // take care to avoid pointer overflow
+            if ((end - pe) >= SPIN_SIZE) {
+                pe += SPIN_SIZE - 1;
+            } else {
+                at_end = true;
+                pe = end;
+            }
+            ticks++;
+            if (my_cpu < 0) {
+                continue;
+            }
+            test_addr[my_cpu] = (uintptr_t)p;
+            do {
+                testword_t pat = dat;
+                testword_t actual = read_word(p);
+                if (unlikely(actual != pat)) {
+                    data_error(p, pat, actual, true);
+                }
+//                if (cxmode) dat = ~pat; 
+                dat = ~pat; 
+            } while (p++ < pe); // test before increment in case pointer overflows
+            do_tick(my_cpu);
+            BAILOUT;
+        } while (!at_end && ++pe); // advance pe to next start point
+    } 
+    
+    return ticks; 
+}
+
+static int fill1A_topdown(int my_cpu, bool cxmode, bool inv) {
+    int ticks = 0;
+    testword_t patt = 0; 
+    
+//    if (cxmode) patt = `CROSSDSTBDAT; 
+#if TESTWORD_WIDTH > 32 
+    if (cxmode) patt = 0x5555555555555555; 
+#else
+    if (cxmode) patt = 0x55555555; 
+#endif
+    if (inv) patt = ~patt; 
+
+    if (my_cpu == master_cpu) {
+        display_test_pattern_value(~patt); 
+    }
+
+    flush_caches(my_cpu);
+    for (int j = vm_map_size - 1; j >= 0; j--) {
+        testword_t *start, *end;
+//        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[j].start;
+        uintptr_t p1 = (uintptr_t)vm_map[j].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
+
+        testword_t *p  = end;
+        testword_t *ps = end;
+
+        bool at_start = false;
+        do {
+            // take care to avoid pointer underflow
+            if ((ps - start) >= SPIN_SIZE) {
+                ps -= SPIN_SIZE - 1;
+            } else {
+                at_start = true;
+                ps = start;
+            }
+            ticks++;
+            if (my_cpu < 0) {
+                continue;
+            }
+            test_addr[my_cpu] = (uintptr_t)p;
+            do {
+                testword_t pat = patt;
+                write_word(p, pat); // write the inv-pat 
+                pat = ~pat; 
+                write_word(p, pat); 
+//                if (cxmode) patt = pat; 
+                patt = pat; 
+            } while (p-- > ps); // test before decrement in case pointer overflows
+            do_tick(my_cpu);
+            BAILOUT;
+        } while (!at_start && --ps); // advance ps to next start point
+    } 
+    
+    return ticks; 
+}
+
+static int verify05_topdown(int my_cpu, bool cxmode, bool inv) {
+    int ticks = 0;
+    testword_t patt = 0; 
+    
+//    if (cxmode) patt = `CROSSDSTBDAT; 
+#if TESTWORD_WIDTH > 32 
+    if (cxmode) patt = 0x5555555555555555; 
+#else
+    if (cxmode) patt = 0x55555555; 
+#endif
+    if (inv) patt = ~patt; 
+
+    flush_caches(my_cpu);
+    for (int j = vm_map_size - 1; j >= 0; j--) {
+        testword_t *start, *end;
+//        calculate_chunk(&start, &end, my_cpu, j, sizeof(testword_t));
+        uintptr_t p0 = (uintptr_t)vm_map[j].start;
+        uintptr_t p1 = (uintptr_t)vm_map[j].end;
+        start = (testword_t *) p0;
+        end = (testword_t *) p1; 
+
+        testword_t *p  = end;
+        testword_t *ps = end;
+        
+        bool at_start = false;
+        do {
+            // take care to avoid pointer underflow
+            if ((ps - start) >= SPIN_SIZE) {
+                ps -= SPIN_SIZE - 1;
+            } else {
+                at_start = true;
+                ps = start;
+            }
+            ticks++;
+            if (my_cpu < 0) {
+                continue;
+            }
+            test_addr[my_cpu] = (uintptr_t)p;
+            do {
+                testword_t pat = patt;
+                testword_t actual = read_word(p);
+                if (unlikely(actual != pat)) {
+                    data_error(p, pat, actual, true);
+                }
+//                if (cxmode) patt = ~pat; 
+                patt = ~pat; 
+            } while (p-- > ps); // test before decrement in case pointer overflows
+            do_tick(my_cpu);
+            BAILOUT;
+        } while (!at_start && --ps); // advance ps to next start point
+    } 
+    
+    return ticks; 
+}
 #endif
 /* 
  * CTP & inverted memory fill/verify 
@@ -8572,35 +8809,24 @@ int ctp_fill_verify(int my_cpu, int iterations)
     long ictp[vm_map_size-1]; 
     int ticks = 0;
  
-/*
-    // run an NV-order seq 
-    // fill & verify CTP from bottom up 
-    pat = ctp_rst();
-    if (my_cpu == master_cpu) {
-        display_test_pattern_value(pat);
-    }
-    ticks = ctp_fill_bottomup(my_cpu, false);
-    flush_caches(my_cpu);
-    pat = ctp_rst(); 
-    if (my_cpu == master_cpu) {
-        display_test_pattern_value(pat);
-    }
-    ticks += ctp_verify_bottomup(my_cpu, false); 
-    flush_caches(my_cpu);
-    pat = ~ctp_rst();
-    if (my_cpu == master_cpu) {
-        display_test_pattern_value(pat);
-    }
-    ticks += ctp_fill_bottomup(my_cpu, true);
-    flush_caches(my_cpu);
-    pat = ~ctp_rst(); 
-    if (my_cpu == master_cpu) {
-        display_test_pattern_value(pat);
-    }
-    ticks += ctp_verify_bottomup(my_cpu, true);
-    flush_caches(my_cpu);
-*/
-
+#ifdef TESTMINMAXCXDSTB
+        ticks = fill1A_topdown(my_cpu, false, false);
+        ticks += verify05_topdown(my_cpu, false, true);
+        ticks += fill1A_topdown(my_cpu, false, true);
+        ticks += verify05_topdown(my_cpu, false, false);
+        ticks += fill1A_bottomup(my_cpu, false, false);
+        ticks += verify05_bottomup(my_cpu, false, true); 
+        ticks += fill1A_bottomup(my_cpu, false, true);
+        ticks += verify05_bottomup(my_cpu, false, false);
+        ticks += fill1A_topdown(my_cpu, true, false);
+        ticks += verify05_topdown(my_cpu, true, true);
+        ticks += fill1A_topdown(my_cpu, true, true);
+        ticks += verify05_topdown(my_cpu, true, false);
+        ticks += fill1A_bottomup(my_cpu, true, false);
+        ticks += verify05_bottomup(my_cpu, true, true); 
+        ticks += fill1A_bottomup(my_cpu, true, true);
+        ticks += verify05_bottomup(my_cpu, true, false);
+#endif
     for (int i=0; i<iterations; i++) { 
         // fill & verify CTP from top down
         ticks += ctp_fill_topdown(my_cpu, ictp, false);
@@ -8885,21 +9111,6 @@ int ctp_ss(int my_cpu, int iterations) {
     long ictp[vm_map_size-1]; 
     int ticks = 0;
     
-/*
-    // run an NV-order sequence (up-down-up-down-up) 
-    pat = ctp_rst();
-    if (my_cpu == master_cpu) {
-        display_test_pattern_value(pat);
-    }
-    ticks = ctp_fill_bottomup(my_cpu, false);
-    flush_caches(my_cpu);
-    pat = ctp_rst();
-    ticks += ctp_ss_bottomup(my_cpu, iterations);
-    flush_caches(my_cpu);
-    pat = ctp_rst(); 
-    ticks += ctp_verify_bottomup(my_cpu, false);
-    flush_caches(my_cpu);
-*/
     for (int i=0; i<CTP_SS_LOOPS; i++) { 
         ticks += ctp_fill_topdown(my_cpu, ictp, false);
         ticks += ctp_ss_topdown(my_cpu, ictp, iterations);

@@ -7,7 +7,7 @@
         <activeConfTypeElem>0</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="30">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="32">
         <file>
             <url>file:/home/gnu/development/mt86p6ctp06/tests/ctp.c</url>
             <bookmark id="26">
@@ -17,47 +17,52 @@
             </bookmark>
             <bookmark id="27">
                 <name/>
-                <line>151</line>
+                <line>152</line>
                 <key/>
             </bookmark>
             <bookmark id="29">
                 <name/>
-                <line>8233</line>
+                <line>8236</line>
                 <key/>
             </bookmark>
             <bookmark id="30">
                 <name/>
-                <line>8298</line>
+                <line>8301</line>
+                <key/>
+            </bookmark>
+            <bookmark id="32">
+                <name/>
+                <line>8338</line>
                 <key/>
             </bookmark>
             <bookmark id="7">
                 <name/>
-                <line>8335</line>
+                <line>8572</line>
                 <key/>
             </bookmark>
             <bookmark id="20">
                 <name/>
-                <line>8457</line>
+                <line>8694</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>8569</line>
+                <line>8806</line>
                 <key/>
             </bookmark>
             <bookmark id="22">
                 <name/>
-                <line>8624</line>
+                <line>8850</line>
                 <key/>
             </bookmark>
             <bookmark id="19">
                 <name/>
-                <line>8750</line>
+                <line>8976</line>
                 <key/>
             </bookmark>
             <bookmark id="25">
                 <name/>
-                <line>8883</line>
+                <line>9109</line>
                 <key/>
             </bookmark>
         </file>
